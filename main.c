@@ -1,10 +1,3 @@
-//
-//  main.c
-//  char_Six_Bit_Encoder
-//
-//  Created by Mr. Penguin on 2/26/18.
-//  Copyright © 2018 Mr. Penguin. All rights reserved.
-
 // Convert the input string into a compressed output format.
 // Each char should be represented in 6-bits.
 // The characters should be packed into 64-bit works, using up to 60 bits.
@@ -14,17 +7,17 @@
 // A-Z should be the next 26.
 // ' ', ',', '.', '?', '!' and '\n' should be the next 6.
 // All other characters can be ignored and skipped.
-// Return the number of output words that were written.
+
 int encode_string(char *char_String, int long long *result, int count_Char, int char_String_Length);
 int decode_string(int long long *result, int count_Char, int char_String_Length);
 
 int main() {
-    //char small_String[] = "BAaaZB\0";  // small example string
-    char small_String[] = "abcd efghijk !lmnopqrstuv\0";  // big example string
+    //char test_String[] = "BAaaZB\0";  // small example string
+    char test_String[] = "abcd efghijk !lmnopqrstuv , I know this can be a crazy amazing time but look at all of this compression! This is nuts.\0";  // big example string
     
-    int char_String_Length = strlen(small_String);  // find the length of the string CHANGE PARAMETER DEPEMNDING ON YOUR INPUT
+    int char_String_Length = strlen(test_String);  // find the length of the string CHANGE PARAMETER DEPEMNDING ON YOUR INPUT
     char char_String[char_String_Length];  // create an array to store up to 10 characters
-    memcpy(char_String, small_String, char_String_Length); // CHANGE MIDDLE PARAMETER DEPEMNDING ON YOUR INPUT
+    memcpy(char_String, test_String, char_String_Length); // CHANGE MIDDLE PARAMETER DEPEMNDING ON YOUR INPUT
     
     int count_Char = ceil(char_String_Length * 0.1);  // integer that tracks the number of 64 bit integers needed for the string
     int long long result[count_Char];  // pack the 6-bit values into a 64-bit long long int
@@ -34,7 +27,7 @@ int main() {
 }
 
 int encode_string(char *char_String, int long long *result, int count_Char, int char_String_Length) {
-    printf("%s\n", char_String);
+    printf("input:%s\n\n", char_String);
     int i=0;  // integer that counts from 0 to (64/6 = 10 characters)
     int j=0;  // integer that counts from 0 to count_Char
     int count_Char_Remainder = char_String_Length;  // needed in case there is less than 10 chars stored in a 64 bit integer
@@ -73,7 +66,7 @@ int encode_string(char *char_String, int long long *result, int count_Char, int 
         }
         result[j] = (result[j] << 6) | char_Result;  // shift and then replace the 6 least important bits from result with the 6 least important bits from char_Result
         if (i == count_Char_Remainder-1){
-            printf("result: %ill \n",result[j]);
+            //printf("result: %ill \n",result[j]);
             j++;
             result[j] = 0;
             count_Char_Remainder = count_Char_Remainder + 10;
@@ -141,6 +134,6 @@ int decode_string(int long long *result, int count_Char, int char_String_Length)
         }
     }
     decodenow[char_String_Length] = '\0';
-    printf("word: %s \n", decodenow);
+    printf("Output:%s \n\n", decodenow);
     return (0);
 }
