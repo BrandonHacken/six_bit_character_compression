@@ -4,25 +4,34 @@
 //
 //  Created by Mr. Penguin on 2/26/18.
 //  Copyright © 2018 Mr. Penguin. All rights reserved.
-//
-int main(int argc, const char * argv[]) {
+int encode_string(char *char_String, int long long *result, int count_Char, int char_String_Length);
+int decode_string(int long long *result, int count_Char, int char_String_Length);
+
+int main() {
     char small_String[] = "BAaaZB";  // small example string
     char large_String[] = "abcdefghijklmnopqrstuv";  // big example string
     int char_String_Length = strlen(large_String);  // find the length of the string CHANGE PARAMETER DEPEMNDING ON YOUR INPUT
     char char_String[char_String_Length];  // create an array to store up to 10 characters
     memcpy(char_String, large_String, char_String_Length); // CHANGE MIDDLE PARAMETER DEPEMNDING ON YOUR INPUT
     printf("%s\n", char_String);
+    int count_Char = ceil(char_String_Length * 0.1);  // integer that tracks the number of 64 bit integers needed for the string
+    int long long result[count_Char];  // pack the 6-bit values into a 64-bit long long int
+
+    encode_string(&char_String, &result, count_Char, char_String_Length);
+    decode_string(&result, count_Char, char_String_Length);
+    
+    return 0;
+}
+
+int encode_string(char *char_String, int long long *result, int count_Char, int char_String_Length) {
     int i=0;  // integer that counts from 0 to (64/6 = 10 characters)
     int j=0;  // integer that counts from 0 to count_Char
-    char_String_Length = strlen(char_String);  // find the length of the string
     int count_Char_Remainder = char_String_Length;  // needed in case there is less than 10 chars stored in a 64 bit integer
     if (count_Char_Remainder > 10) {
         count_Char_Remainder = 10;
     }
-    int count_Char = ceil(char_String_Length * 0.1);  // integer that tracks the number of 64 bit integers needed for the string
-    printf("the number of loops of 10 characters: %i \n",count_Char);
+    //printf("the number of loops of 10 characters: %i \n",count_Char);
     int char_Result = 0;  // pack the 6-bit values into an 8-bit char_Result
-    int long long result[count_Char];  // pack the 6-bit values into a 64-bit long long int
     
     result[j] = 0;
     while (i < count_Char_Remainder && j < count_Char) {
@@ -47,14 +56,16 @@ int main(int argc, const char * argv[]) {
                 //printf("newest %i\n",count_Char_Remainder);
             }
         }
-        
         i++;
     }
-    
-    
-    
+    return (1);
+}
+
+
+int decode_string(int long long *result, int count_Char, int char_String_Length) {
     // Check Encoding
-    j = 1;
+    int j = 1;
+    int i = 0;
     int now = 9;
     int nowtemp = 0;
     long long int temp = 0b111111;
@@ -86,8 +97,8 @@ int main(int argc, const char * argv[]) {
         }
     }
     /*for ( i =0 ; i < char_String_Length; i++){
-        printf("%c \n", decodenow[i]);
-    }*/
+     printf("%c \n", decodenow[i]);
+     }*/
     printf("word: %s \n", decodenow);
-    return 0;
+    return (1);
 }
